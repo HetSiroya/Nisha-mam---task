@@ -26,8 +26,6 @@
                 </tr>
             </thead>
             <tbody>
-
-
     </div>
     <?php
     $folder_name = "uploads/";
