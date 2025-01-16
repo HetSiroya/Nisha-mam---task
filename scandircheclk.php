@@ -39,12 +39,12 @@
             if ($file != '.' && $file != '..') {
                 // echo "$file <br><br>";
     ?>
-    <tr>
-        <!--  < ? = is use for "php echo" -->
-        <td><?= $file ?></td>
-        <td><button class="btn btn-success">Download</button></td>
-        <td><button class="btn btn-danger">Delete</button></td>
-    </tr>
+                <tr>
+                    <!--  < ? = is use for "php echo" -->
+                    <td><?= $file ?></td>
+                    <td><button class="btn btn-success">Download</button></td>
+                    <td><button class="btn btn-danger">Delete</button></td>
+                </tr>
     <?php
             }
         }
