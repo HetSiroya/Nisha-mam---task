@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="./css/index.css">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script>
+        function download($file) {
+            $file = d
+
+        }
+    </script>
 </head>
 
 <body>
@@ -29,11 +35,17 @@
     </div>
     <?php
     $folder_name = "uploads/";
+
     if (isset($_POST["u_btn"])) {
         $file_name = $_FILES['u_file']['name'];
         if (move_uploaded_file($_FILES['u_file']['tmp_name'], $folder_name . $file_name)); {
             // echo 'file is upload successfully';
         }
+        // else{
+        //     if ($folder_name == "uploads/") {
+        //         mkdir("uploads/");
+        //     }
+        // }
         $files = scandir($folder_name);
         foreach ($files as $file) {
             if ($file != '.' && $file != '..') {
@@ -42,7 +54,7 @@
                 <tr>
                     <!--  < ? = is use for "php echo" -->
                     <td><?= $file ?></td>
-                    <td><button class="btn btn-success">Download</button></td>
+                    <td><button class="btn btn-success"><a href="" download="">Download</a></button></td>
                     <td><button class="btn btn-danger">Delete</button></td>
                 </tr>
     <?php
