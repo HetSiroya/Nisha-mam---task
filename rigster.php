@@ -28,85 +28,95 @@
     <script src="./jqueryvalidate.js"></script>
     <script src="./jqueryvalidatead.js"></script>
     <script>
-    $(document).ready(function() {
-        $.validator.addMethod("lettersonly", function(value, element) {
-            return this.optional(element) || /^[a-zA-Z]+$/i.test(value);
-        }, "Name must contain only letters.");
+        $(document).ready(function() {
+            $.validator.addMethod("lettersonly", function(value, element) {
+                return this.optional(element) || /^[a-zA-Z]+$/i.test(value);
+            }, "Name must contain only letters.");
 
-        $("#form").validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 15,
-                    lettersonly: true
+            $("#form").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 15,
+                        lettersonly: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        pattern: /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
+                    },
+                    confirmpassword: {
+                        required: true,
+                        equalTo: "#password"
+                    }
                 },
-                email: {
-                    required: true,
-                    email: true
+                messages: {
+                    name: {
+                        required: "Name is required",
+                        minlength: "Name must be at least 3 characters",
+                        maxlength: "Name must be at most 15 characters",
+                        lettersonly: "Name must contain only letters"
+                    },
+                    email: {
+                        required: "Email is required",
+                        email: "Email is invalid"
+                    },
+                    password: {
+                        required: "Password is required",
+                        minlength: "Password must be at least 6 characters",
+                        pattern: "Password must contain at least one uppercase letter, one lowercase letter, one number or special character"
+                    },
+                    confirmpassword: {
+                        required: "Confirm password is required",
+                        equalTo: "Password and confirm password must be the same"
+                    }
                 },
-                password: {
-                    required: true,
-                    minlength: 6,
-                    pattern: /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
+                errorElement: "div",
+                errorPlacement: function(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".form-control").after(error);
                 },
-                confirmpassword: {
-                    required: true,
-                    equalTo: "#password"
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid').addClass('is-valid');
                 }
-            },
-            messages: {
-                name: {
-                    required: "Name is required",
-                    minlength: "Name must be at least 3 characters",
-                    maxlength: "Name must be at most 15 characters",
-                    lettersonly: "Name must contain only letters"
-                },
-                email: {
-                    required: "Email is required",
-                    email: "Email is invalid"
-                },
-                password: {
-                    required: "Password is required",
-                    minlength: "Password must be at least 6 characters",
-                    pattern: "Password must contain at least one uppercase letter, one lowercase letter, one number or special character"
-                },
-                confirmpassword: {
-                    required: "Confirm password is required",
-                    equalTo: "Password and confirm password must be the same"
-                }
-            },
-            errorElement: "div",
-            errorPlacement: function(error, element) {
-                error.addClass("invalid-feedback");
-                element.closest(".form-control").after(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid').removeClass('is-valid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid').addClass('is-valid');
-            }
+            });
         });
-    });
     </script>
 </body>
 <?php
+$con = mysqli_connect("localhost", "root", "", "test");
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $con = mysqli_connect("localhost", "root", "", "test");
     if (!$con) {
         echo "Error: ";
     } else {
         $sql = "INSERT INTO `register`(`Username` ,`email`, `password` ) VALUES ('$name' , '$email' , '$password')";
 
         if ($con->query($sql) == true) {
-            echo "Data is inserted successfully";
+            // log("Data inserted successfully");
+            // echo "Data inserted successfully";
+            echo "<script>console.log(`data inserted`)</script>";
         } else {
             echo "Data is not inserted";
         }
+    }
+}
+
+$q = "SELECT * FROM `register`";
+$result = $con->query($q);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "Name: " . $row['Username'] . " Email: " . $row['email'] . " Password: " . $row['password'] . "<br>";
     }
 }
 ?>
